@@ -54,7 +54,7 @@ class auth_plugin_authhttp extends DokuWiki_Auth_Plugin {
         /* Make sure that HTTP authentication has been enabled in the Web
            server. Note that does not seem to work with PHP >= 4.3.0 and safe
            mode enabled! */
-        if ($_SERVER['PHP_AUTH_USER'] == "") {
+        if ($_SERVER['PHP_AUTH_USER'] == "" && $_SERVER['PHP_AUTH_DIGEST'] == "") {
             msg($this->getLang('nocreds'), -1);
             $this->success = false;
             return;
@@ -91,7 +91,8 @@ class auth_plugin_authhttp extends DokuWiki_Auth_Plugin {
      * @return  bool
      */
     public function checkPass($user, $pass) {
-        return ($user == $this->cleanUser($_SERVER['PHP_AUTH_USER']) && $pass == $_SERVER['PHP_AUTH_PW']);
+        // The password was checked by the Web server
+	    return true;
     }
 
     /**
